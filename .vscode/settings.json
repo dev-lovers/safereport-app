@@ -1,0 +1,30 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true
+  },
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "javascript.preferences.importModuleSpecifier": "non-relative",
+  "importSorter.generalConfiguration.sortOnBeforeSave": true,
+  "importSorter.sortConfiguration.customOrderingRules.rules": [
+    {
+      "regex": "^react$",
+      "orderLevel": 10
+    },
+    {
+      "regex": "^expo",
+      "orderLevel": 20
+    },
+    {
+      "regex": "^react-native",
+      "orderLevel": 30
+    },
+    {
+      "regex": "^@",
+      "orderLevel": 40
+    },
+    {
+      "regex": "^[./]",
+      "orderLevel": 50
+    }
+  ]
+}

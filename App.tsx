@@ -1,23 +1,32 @@
 import React from "react";
 import { StatusBar } from "expo-status-bar";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { StyleSheet, Text, View } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { PaperProvider } from "react-native-paper";
 
 export default function App() {
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
-        <Text style={styles.title}>SafeReport</Text>
-        <Text style={styles.subtitle}>
-          Aplicativo de denúncias seguras e anônimas
-        </Text>
-        <StatusBar style="dark" />
-      </View>
-    </SafeAreaView>
+    <GestureHandlerRootView style={styles.root}>
+      <PaperProvider>
+        <SafeAreaView style={styles.safeArea}>
+          <View style={styles.container}>
+            <Text style={styles.title}>SafeReport</Text>
+            <Text style={styles.subtitle}>
+              Aplicativo de denúncias seguras e anônimas
+            </Text>
+            <StatusBar style="dark" />
+          </View>
+        </SafeAreaView>
+      </PaperProvider>
+    </GestureHandlerRootView>
   );
 }
 
 const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+  },
   safeArea: {
     flex: 1,
     backgroundColor: "#f9f9f9",
