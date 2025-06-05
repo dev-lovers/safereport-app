@@ -49,3 +49,6 @@ yarn-error.*
 # ⚙️ Android Studio / Kotlin
 .kotlin/
 .idea/
+
+# VSCode extensions cache
+.vscode/.react/
