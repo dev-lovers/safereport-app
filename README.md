@@ -10,45 +10,46 @@ Este projeto faz parte de um programa de extensão universitária do curso de Ci
 - Criptografia de ponta a ponta para proteção dos dados
 - Interface acessível e simples para uso comunitário
 
-## 🚀 Tecnologias e Ferramentas
+## 🛠️ Tecnologias
 
-- [React Native](https://reactnative.dev/)
-- [Expo](https://expo.dev/)
-- [TypeScript](https://www.typescriptlang.org/)
-- [React Navigation](https://reactnavigation.org/)
-- [Expo Location](https://docs.expo.dev/versions/latest/sdk/location/)
-- [Expo SecureStore ou Crypto](https://docs.expo.dev/versions/latest/sdk/securestore/)
+- React Native + Expo
+- React Navigation (bottom tabs + native stack)
+- Context API com tipagem e persistência
+- React Native Paper (UI)
+- TypeScript
+- AsyncStorage e SecureStore
+- Expo Location, Camera, Media Library, Notifications
 
-## 📂 Estrutura de Pastas
+## 🚀 Como executar
 
-```
-safereport-app/
-├── assets/            # Imagens, ícones, fontes, logos
-│   ├── icons/
-│   ├── images/
-│   ├── fonts/
-│   └── logos/
-├── src/
-│   ├── components/    # Componentes reutilizáveis
-│   ├── screens/       # Telas do app
-│   ├── services/      # Integração com APIs ou Firebase
-│   ├── context/       # Contextos globais (ex: auth, location)
-│   ├── hooks/         # Custom hooks
-│   ├── navigation/    # Navegação do app
-│   ├── utils/         # Utilitários e helpers
-│   └── types/         # Tipagens globais
-├── App.tsx
-├── app.json
-├── index.ts
-├── tsconfig.json
-```
+1. Clone o repositório
 
-## ▶️ Executando o projeto
+   ```bash
+   git clone https://github.com/dev-lovers/safereport-app.git
+   cd safereport-app
+   ```
 
-```bash
-npm install
-npx expo start
-```
+2. Instale as dependências
+
+   ```bash
+   npm install
+   ```
+
+3. Inicie o app
+   ```bash
+   npx expo start
+   ```
+
+## 🔗 Repositório
+
+Acesse diretamente: [github.com/dev-lovers/safereport-app](https://github.com/dev-lovers/safereport-app)
+
+## 🧠 Observações técnicas
+
+- Arquitetura escalável com separação de contexto por domínio
+- Navegação desacoplada e tipada
+- Pasta `screens/` modularizada por funcionalidade
+- Alias de paths configurado via `tsconfig` e `babel.config.js`
 
 ## 📄 Licença
 
