@@ -10,7 +10,10 @@
       "@context/*": ["context/*"],
       "@hooks/*": ["hooks/*"],
       "@utils/*": ["utils/*"],
+      "@navigation/*": ["navigation/*"],
       "@assets/*": ["../assets/*"]
     }
-  }
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"]
 }
