@@ -1,7 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Location from 'expo-location';
 import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react';
-import { AppContextData, UserLocation } from './types';
+
+import { AppContextData, UserLocation } from '../types';
 
 const AppContext = createContext<AppContextData>({} as AppContextData);
 

@@ -9,6 +9,7 @@
       "@services/*": ["services/*"],
       "@context/*": ["context/*"],
       "@hooks/*": ["hooks/*"],
+      "@theme/*": ["theme/*"],
       "@utils/*": ["utils/*"],
       "@types/*": ["types/*"],
       "@navigation/*": ["navigation/*"],

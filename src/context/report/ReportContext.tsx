@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react';
-import { ReportContextData, ReportDraft } from './types';
+
+import { ReportContextData, ReportDraft } from '../types';
 
 const ReportContext = createContext<ReportContextData>({} as ReportContextData);
 

@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="./assets/logos/logo.png" alt="SafeReport Logo" height="160"/>
+</p>
+
 # SafeReport
 
 Aplicativo de denúncias seguras, anônimas e com geolocalização, desenvolvido em React Native com Expo.  
@@ -36,6 +40,7 @@ Este projeto faz parte de um programa de extensão universitária do curso de Ci
    ```
 
 3. Inicie o app
+
    ```bash
    npx expo start
    ```
