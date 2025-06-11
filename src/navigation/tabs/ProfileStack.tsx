@@ -1,17 +1,35 @@
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createNativeStackNavigator, NativeStackScreenProps } from '@react-navigation/native-stack';
 import ProfileScreen from '@screens/Profile/ProfileScreen';
+import SettingsScreen from '@screens/Settings/SettingsScreen';
 import React from 'react';
 
-const Stack = createNativeStackNavigator();
+export type ProfileStackParamList = {
+  ProfileScreen: undefined;
+  SettingsScreen: undefined;
+};
+
+export type ProfileStackScreenProps<T extends keyof ProfileStackParamList> = NativeStackScreenProps<
+  ProfileStackParamList,
+  T
+>;
+
+const Stack = createNativeStackNavigator<ProfileStackParamList>();
 
 export default function ProfileStack() {
   return (
     <Stack.Navigator>
-      <Stack.Screen
-        name="ProfileScreen"
-        component={ProfileScreen}
-        options={{ headerShown: false, title: 'Perfil' }}
-      />
+      <Stack.Group screenOptions={{ headerShown: false }}>
+        <Stack.Screen
+          name="ProfileScreen"
+          component={ProfileScreen}
+          options={{ title: 'Perfil' }}
+        />
+        <Stack.Screen
+          name="SettingsScreen"
+          component={SettingsScreen}
+          options={{ title: 'Configurações' }}
+        />
+      </Stack.Group>
     </Stack.Navigator>
   );
 }

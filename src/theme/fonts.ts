@@ -3,4 +3,6 @@ export const fonts = {
   medium: 'Poppins-Medium',
   semiBold: 'Poppins-SemiBold',
   bold: 'Poppins-Bold',
+  titleLarge: 'Poppins-SemiBold',
+  bodyMedium: 'Poppins-Regular',
 };

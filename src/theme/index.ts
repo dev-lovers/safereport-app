@@ -18,6 +18,8 @@ export const getTheme = (isDark = false) => {
       medium: { fontFamily: fonts.medium, fontWeight: '500' },
       semiBold: { fontFamily: fonts.semiBold, fontWeight: '600' },
       bold: { fontFamily: fonts.bold, fontWeight: '700' },
+      titleLarge: { fontFamily: fonts.titleLarge, fontWeight: '600' },
+      bodyMedium: { fontFamily: fonts.bodyMedium, fontWeight: '400' },
     },
   };
 };

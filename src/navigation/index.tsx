@@ -1,6 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import { useTheme } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import HomeStack from './tabs/HomeStack';
@@ -12,6 +13,7 @@ const Tab = createBottomTabNavigator<RootTabParamList>();
 
 export default function TabNavigator() {
   const { colors } = useTheme();
+  const insets = useSafeAreaInsets();
 
   return (
     <Tab.Navigator
@@ -23,13 +25,12 @@ export default function TabNavigator() {
           backgroundColor: colors.surface,
           borderTopColor: colors.outlineVariant ?? colors.outline,
           borderTopWidth: 0.5,
-          height: 60,
-          paddingBottom: 6,
+          height: 60 + insets.bottom,
+          paddingBottom: insets.bottom > 0 ? insets.bottom : 6,
           paddingTop: 4,
         },
         tabBarIcon: ({ color, size }) => {
           let iconName: string;
-
           switch (route.name) {
             case 'HomeStack':
               iconName = 'home';
@@ -48,7 +49,7 @@ export default function TabNavigator() {
         },
       })}
     >
-      <Tab.Screen name="HomeStack" component={HomeStack} options={{ title: 'Início' }} />
+      <Tab.Screen name="HomeStack" component={HomeStack} options={{ title: 'Home' }} />
       <Tab.Screen name="ReportStack" component={ReportStack} options={{ title: 'Denúncia' }} />
       <Tab.Screen name="ProfileStack" component={ProfileStack} options={{ title: 'Perfil' }} />
     </Tab.Navigator>
