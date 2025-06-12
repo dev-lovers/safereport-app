@@ -1,3 +1,4 @@
+import CustomTabBarButton from '@components/TabBar/CustomTabBarButton';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import { useTheme } from 'react-native-paper';
@@ -29,6 +30,7 @@ export default function TabNavigator() {
           paddingBottom: insets.bottom > 0 ? insets.bottom : 6,
           paddingTop: 4,
         },
+        tabBarButton: props => <CustomTabBarButton {...props} />,
         tabBarIcon: ({ color, size }) => {
           let iconName: string;
           switch (route.name) {
