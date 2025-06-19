@@ -7,18 +7,12 @@ const PreferencesContext = createContext<PreferencesContextData>({} as Preferenc
 
 export const PreferencesProvider = ({ children }: { children: ReactNode }) => {
   const [theme, setTheme] = useState<AppTheme>('light');
-  const [notificationsEnabled, setNotificationsEnabled] = useState(true);
 
   useEffect(() => {
     const loadPreferences = async () => {
       const storedTheme = await AsyncStorage.getItem('theme');
-      const storedNotifications = await AsyncStorage.getItem('notificationsEnabled');
-
       if (storedTheme === 'dark' || storedTheme === 'light') {
         setTheme(storedTheme);
-      }
-      if (storedNotifications !== null) {
-        setNotificationsEnabled(storedNotifications === 'true');
       }
     };
     loadPreferences();
@@ -30,16 +24,8 @@ export const PreferencesProvider = ({ children }: { children: ReactNode }) => {
     await AsyncStorage.setItem('theme', newTheme);
   };
 
-  const toggleNotifications = async () => {
-    const newValue = !notificationsEnabled;
-    setNotificationsEnabled(newValue);
-    await AsyncStorage.setItem('notificationsEnabled', String(newValue));
-  };
-
   return (
-    <PreferencesContext.Provider
-      value={{ theme, toggleTheme, notificationsEnabled, toggleNotifications }}
-    >
+    <PreferencesContext.Provider value={{ theme, toggleTheme }}>
       {children}
     </PreferencesContext.Provider>
   );

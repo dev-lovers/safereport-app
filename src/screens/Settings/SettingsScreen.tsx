@@ -1,4 +1,4 @@
-import { usePreferencesContext } from '@context';
+import { useNotificationsContext, usePreferencesContext } from '@context';
 import { ProfileStackScreenProps } from '@navigation/tabs/ProfileStack';
 import { spacing } from '@theme/spacing';
 import React from 'react';
@@ -8,8 +8,17 @@ import { Appbar, Divider, List, Switch, useTheme } from 'react-native-paper';
 type Props = ProfileStackScreenProps<'SettingsScreen'>;
 
 export default function SettingsScreen({ navigation }: Props) {
-  const { theme, toggleTheme, notificationsEnabled, toggleNotifications } = usePreferencesContext();
+  const { theme, toggleTheme } = usePreferencesContext();
+  const { notificationsEnabled, toggleNotifications } = useNotificationsContext();
   const { colors } = useTheme();
+
+  const handleToggleNotifications = async () => {
+    try {
+      await toggleNotifications();
+    } catch (error) {
+      console.warn('Erro ao alternar notificações:', error);
+    }
+  };
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
@@ -36,7 +45,7 @@ export default function SettingsScreen({ navigation }: Props) {
           right={() => (
             <Switch
               value={notificationsEnabled}
-              onValueChange={toggleNotifications}
+              onValueChange={handleToggleNotifications}
               color={colors.primary}
             />
           )}

@@ -3,18 +3,17 @@ export interface UserLocation {
   longitude: number;
 }
 
+export interface AppContextData {
+  isLoading: boolean;
+  userLocation: UserLocation | null;
+  setUserLocation: (location: UserLocation) => void;
+  fetchUserLocation: () => Promise<void>;
+}
+
 export interface User {
   id: string;
   name: string;
   email: string;
-}
-
-export interface ReportDraft {
-  title: string;
-  description: string;
-  mediaUri?: string;
-  location?: UserLocation;
-  timestamp: string;
 }
 
 export interface AuthContextData {
@@ -26,24 +25,32 @@ export interface AuthContextData {
   signOut: () => Promise<void>;
 }
 
+export interface NotificationContextData {
+  expoPushToken: string | null;
+  requestPermission: () => Promise<boolean>;
+  scheduleNotification: (title: string, body: string, data?: Record<string, any>) => Promise<void>;
+  lastNotification: import('expo-notifications').Notification | null;
+  notificationsEnabled: boolean;
+  toggleNotifications: () => Promise<void>;
+}
+
 export type AppTheme = 'light' | 'dark';
 
 export interface PreferencesContextData {
   theme: AppTheme;
   toggleTheme: () => void;
-  notificationsEnabled: boolean;
-  toggleNotifications: () => void;
+}
+
+export interface ReportDraft {
+  title: string;
+  description: string;
+  mediaUri?: string;
+  location?: UserLocation;
+  timestamp: string;
 }
 
 export interface ReportContextData {
   reportDraft: ReportDraft | null;
   updateReportDraft: (data: Partial<ReportDraft>) => void;
   clearReportDraft: () => void;
-}
-
-export interface AppContextData {
-  isLoading: boolean;
-  userLocation: UserLocation | null;
-  setUserLocation: (location: UserLocation) => void;
-  fetchUserLocation: () => Promise<void>;
 }

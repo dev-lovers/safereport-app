@@ -1,13 +1,22 @@
 import React, { ReactNode } from 'react';
-import { AppProvider, AuthProvider, PreferencesProvider, ReportProvider } from './index';
+
+import {
+  AppProvider,
+  AuthProvider,
+  NotificationsProvider,
+  PreferencesProvider,
+  ReportProvider,
+} from './index';
 
 export default function GlobalProvider({ children }: { children: ReactNode }) {
   return (
     <AppProvider>
       <AuthProvider>
-        <PreferencesProvider>
-          <ReportProvider>{children}</ReportProvider>
-        </PreferencesProvider>
+        <NotificationsProvider>
+          <PreferencesProvider>
+            <ReportProvider>{children}</ReportProvider>
+          </PreferencesProvider>
+        </NotificationsProvider>
       </AuthProvider>
     </AppProvider>
   );
