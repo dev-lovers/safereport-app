@@ -11,10 +11,14 @@ expo-env.d.ts
 
 # 📦 Build outputs
 build/
-android/app/build/
-ios/build/
 *.apk
 *.aab
+
+# ⚙️ Android
+android/
+
+# ⚙️ iOS
+ios/
 
 # 🔧 Metro bundler
 .metro-cache/
