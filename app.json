@@ -46,7 +46,8 @@
         "android.permission.WRITE_EXTERNAL_STORAGE",
         "android.permission.ACCESS_MEDIA_LOCATION"
       ],
-      "package": "com.devlovers.team.safereportapp"
+      "package": "com.devlovers.team.safereportapp",
+      "googleServicesFile": "./credentials/google-services.json"
     },
     "web": {
       "favicon": "./assets/icons/favicon.png"

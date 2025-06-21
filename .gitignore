@@ -54,5 +54,11 @@ yarn-error.*
 .kotlin/
 .idea/
 
-# VSCode extensions cache
+# 📁 VSCode extensions cache
 .vscode/.react/
+
+# 📁 Configurações sensíveis (Firebase)
+credentials/google-services.json
+
+# ⚙️ Backups e arquivos locais
+project-config/gradle/local.properties.backup
