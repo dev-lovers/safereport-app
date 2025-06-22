@@ -3,10 +3,7 @@ import ProfileScreen from '@screens/Profile/ProfileScreen';
 import SettingsScreen from '@screens/Settings/SettingsScreen';
 import React from 'react';
 
-export type ProfileStackParamList = {
-  ProfileScreen: undefined;
-  SettingsScreen: undefined;
-};
+import { ProfileStackParamList } from '../types';
 
 export type ProfileStackScreenProps<T extends keyof ProfileStackParamList> = NativeStackScreenProps<
   ProfileStackParamList,

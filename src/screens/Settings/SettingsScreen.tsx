@@ -1,11 +1,12 @@
 import { useNotificationsContext, usePreferencesContext } from '@context';
-import { ProfileStackScreenProps } from '@navigation/tabs/ProfileStack';
+import { ProfileStackParamList } from '@navigation/types';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { spacing } from '@theme/spacing';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Appbar, Divider, List, Switch, useTheme } from 'react-native-paper';
 
-type Props = ProfileStackScreenProps<'SettingsScreen'>;
+type Props = NativeStackScreenProps<ProfileStackParamList, 'SettingsScreen'>;
 
 export default function SettingsScreen({ navigation }: Props) {
   const { theme, toggleTheme } = usePreferencesContext();

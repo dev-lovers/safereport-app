@@ -1,6 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
+
 import TabNavigator from './index';
 import { RootStackParamList } from './types';
 
@@ -11,7 +12,8 @@ export default function RootNavigator() {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Root" component={TabNavigator} />
-        {/* Adicione aqui futuras telas fora das tabs */}
+        {/* Futuras telas fora das tabs podem ser adicionadas aqui, por exemplo:
+        <Stack.Screen name="Auth" component={AuthScreen} /> */}
       </Stack.Navigator>
     </NavigationContainer>
   );

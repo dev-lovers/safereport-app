@@ -1,10 +1,16 @@
-import { ProfileStackScreenProps } from '@navigation/tabs/ProfileStack';
+import { ProfileStackParamList, RootTabParamList } from '@navigation/types';
+import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import { CompositeScreenProps } from '@react-navigation/native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { spacing } from '@theme/spacing';
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { Appbar, Avatar, List, Text, useTheme } from 'react-native-paper';
 
-type Props = ProfileStackScreenProps<'ProfileScreen'>;
+type Props = CompositeScreenProps<
+  NativeStackScreenProps<ProfileStackParamList, 'ProfileScreen'>,
+  BottomTabScreenProps<RootTabParamList>
+>;
 
 export default function ProfileScreen({ navigation }: Props) {
   const { colors } = useTheme();
@@ -25,10 +31,16 @@ export default function ProfileScreen({ navigation }: Props) {
       <ScrollView contentContainerStyle={styles.scroll}>
         <View style={styles.avatarContainer}>
           <Avatar.Icon size={96} icon="account" style={{ backgroundColor: colors.primary }} />
-          <Text style={[styles.name, { textAlign: 'center', color: colors.onBackground }]}>
+          <Text
+            variant="titleMedium"
+            style={[styles.name, { textAlign: 'center', color: colors.onBackground }]}
+          >
             User
           </Text>
-          <Text style={[styles.email, { textAlign: 'center', color: colors.outline }]}>
+          <Text
+            variant="bodySmall"
+            style={[styles.email, { textAlign: 'center', color: colors.outline }]}
+          >
             user@gmail.com
           </Text>
         </View>

@@ -32,22 +32,13 @@ export default function TabNavigator() {
         },
         tabBarButton: props => <CustomTabBarButton {...props} />,
         tabBarIcon: ({ color, size }) => {
-          let iconName: string;
-          switch (route.name) {
-            case 'HomeStack':
-              iconName = 'home';
-              break;
-            case 'ReportStack':
-              iconName = 'report';
-              break;
-            case 'ProfileStack':
-              iconName = 'person';
-              break;
-            default:
-              iconName = 'help-outline';
-          }
+          const icons: Record<keyof RootTabParamList, string> = {
+            HomeStack: 'home',
+            ReportStack: 'report',
+            ProfileStack: 'person',
+          };
 
-          return <MaterialIcons name={iconName} size={size} color={color} />;
+          return <MaterialIcons name={icons[route.name]} size={size} color={color} />;
         },
       })}
     >
