@@ -13,6 +13,7 @@ Este projeto faz parte de um programa de extensão universitária do curso de Ci
 - Captura de geolocalização do usuário
 - Criptografia de ponta a ponta para proteção dos dados
 - Interface acessível e simples para uso comunitário
+- Notificações push com controle de permissão pelo usuário
 
 ## 🛠️ Tecnologias
 
@@ -26,24 +27,78 @@ Este projeto faz parte de um programa de extensão universitária do curso de Ci
 
 ## 🚀 Como executar
 
-1. Clone o repositório
+1. **Clone o repositório**
 
    ```bash
    git clone https://github.com/dev-lovers/safereport-app.git
    cd safereport-app
    ```
 
-2. Instale as dependências
+2. **Instale as dependências**
 
    ```bash
    npm install
    ```
 
-3. Inicie o app
+3. **Crie os arquivos de configuração sensíveis (não versionados):**
+
+   - `credentials/google-services.json` → Firebase (Android)
+   - `credentials/firebase-service-account.json` → Conta de serviço do Firebase (FCM V1)
+
+4. **Configure corretamente o arquivo `local.properties`**
+
+   Edite o arquivo `project-config/gradle/local.properties.backup` para apontar para o caminho do Android SDK da sua máquina. Exemplos:
+
+   - **Windows:**
+
+     ```properties
+     sdk.dir=C:\Users\your-username\AppData\Local\Android\Sdk
+     ```
+
+     ⚠️ Substitua `your-username` pelo seu nome de usuário no Windows.
+
+   - **macOS:**
+
+     ```properties
+     sdk.dir=$HOME/Library/Android/sdk
+     ```
+
+   - **Linux:**
+
+     ```properties
+     sdk.dir=$HOME/Android/Sdk
+     ```
+
+5. **Restaure a build de desenvolvimento**
+
+   **Windows:**
 
    ```bash
-   npx expo start
+   npm run restore:windows
    ```
+
+   **macOS/Linux:**
+
+   ```bash
+   npm run restore:unix
+   ```
+
+6. **Execute em um dispositivo físico** (obrigatório para notificações push)
+
+   ```bash
+   npm run android
+   ```
+
+## 📲 Testar envio de notificação manual (via CURL)
+
+```bash
+curl -X POST https://exp.host/--/api/v2/push/send   -H "Content-Type: application/json"   -d '{
+    "to": "ExpoPushToken[SEU_TOKEN]",
+    "title": "🔔 Notificação de Teste",
+    "body": "Seu push está funcionando corretamente!",
+    "sound": "default"
+  }'
+```
 
 ## 🔗 Repositório
 
@@ -53,8 +108,11 @@ Acesse diretamente: [github.com/dev-lovers/safereport-app](https://github.com/de
 
 - Arquitetura escalável com separação de contexto por domínio
 - Navegação desacoplada e tipada
-- Pasta `screens/` modularizada por funcionalidade
-- Alias de paths configurado via `tsconfig` e `babel.config.js`
+- Modularização por funcionalidade (pasta `screens/`)
+- Alias de paths configurado via `tsconfig.json` e `babel.config.js`
+- Integração com Firebase usando FCM V1
+- Scripts de automação para restauração
+- Notificações compatíveis apenas com dispositivo físico
 
 ## 📄 Licença
 
