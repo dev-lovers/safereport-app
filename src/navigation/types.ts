@@ -21,4 +21,5 @@ export type RootTabParamList = {
 
 export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList>;
+  AuthScreen: undefined;
 };

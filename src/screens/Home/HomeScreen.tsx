@@ -1,5 +1,5 @@
 import { useAuthContext, useNotificationsContext } from '@context';
-import { RootTabParamList } from '@navigation/types';
+import { HomeStackParamList, RootTabParamList } from '@navigation/types';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { CompositeScreenProps } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -9,7 +9,7 @@ import { StyleSheet, View } from 'react-native';
 import { Appbar, Avatar, Button, Card, Text, useTheme } from 'react-native-paper';
 
 type Props = CompositeScreenProps<
-  NativeStackScreenProps<RootTabParamList, 'HomeStack'>,
+  NativeStackScreenProps<HomeStackParamList, 'HomeScreen'>,
   BottomTabScreenProps<RootTabParamList>
 >;
 
