@@ -6,6 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import HomeStack from './tabs/HomeStack';
+import MapStack from './tabs/MapStack';
 import ProfileStack from './tabs/ProfileStack';
 import ReportStack from './tabs/ReportStack';
 import { RootTabParamList } from './types';
@@ -34,6 +35,7 @@ export default function TabNavigator() {
         tabBarIcon: ({ color, size }) => {
           const icons: Record<keyof RootTabParamList, string> = {
             HomeStack: 'home',
+            MapStack: 'map',
             ReportStack: 'report',
             ProfileStack: 'person',
           };
@@ -43,6 +45,7 @@ export default function TabNavigator() {
       })}
     >
       <Tab.Screen name="HomeStack" component={HomeStack} options={{ title: 'Home' }} />
+      <Tab.Screen name="MapStack" component={MapStack} options={{ title: 'Mapa' }} />
       <Tab.Screen name="ReportStack" component={ReportStack} options={{ title: 'Denúncia' }} />
       <Tab.Screen name="ProfileStack" component={ProfileStack} options={{ title: 'Perfil' }} />
     </Tab.Navigator>

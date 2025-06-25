@@ -29,7 +29,6 @@ export default function ReportScreen({ navigation }: Props) {
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <Appbar.Header mode="center-aligned" style={{ backgroundColor: colors.primary }}>
-        <Appbar.BackAction color={colors.onPrimary} onPress={() => navigation.goBack()} />
         <Appbar.Content
           title="Nova Denúncia"
           titleStyle={{ textAlign: 'center', color: colors.onPrimary }}

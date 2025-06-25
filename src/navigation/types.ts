@@ -4,6 +4,10 @@ export type HomeStackParamList = {
   HomeScreen: undefined;
 };
 
+export type MapStackParamList = {
+  MapScreen: undefined;
+};
+
 export type ReportStackParamList = {
   ReportScreen: undefined;
 };
@@ -15,6 +19,7 @@ export type ProfileStackParamList = {
 
 export type RootTabParamList = {
   HomeStack: NavigatorScreenParams<HomeStackParamList>;
+  MapStack: NavigatorScreenParams<MapStackParamList>;
   ReportStack: NavigatorScreenParams<ReportStackParamList>;
   ProfileStack: NavigatorScreenParams<ProfileStackParamList>;
 };
