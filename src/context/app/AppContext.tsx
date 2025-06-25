@@ -38,6 +38,36 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     loadPersistedLocation();
     fetchUserLocation();
+
+    let subscription: Location.LocationSubscription;
+
+    const startWatching = async () => {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') return;
+
+      subscription = await Location.watchPositionAsync(
+        {
+          accuracy: Location.Accuracy.High,
+          timeInterval: 5000,
+          distanceInterval: 10,
+        },
+        location => {
+          const coords = {
+            latitude: location.coords.latitude,
+            longitude: location.coords.longitude,
+          };
+          setUserLocation(coords);
+        },
+      );
+    };
+
+    startWatching();
+
+    return () => {
+      if (subscription) {
+        subscription.remove();
+      }
+    };
   }, []);
 
   return (

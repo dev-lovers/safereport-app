@@ -1,10 +1,12 @@
+import { IncidentMarker } from '@components/IncidentMarker/IncidentMarker';
+import { IncidentModal } from '@components/IncidentModal/IncidentModal';
 import { useAppContext } from '@context';
 import { getRecentIncidentsByCoordinates } from '@services';
-import { Incident, Victim } from '@types';
-import React, { useEffect, useRef, useState } from 'react';
+import { Incident } from '@types';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ActivityIndicator, Alert, StyleSheet, View } from 'react-native';
-import MapView, { Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
-import { Appbar, IconButton, Modal, Portal, Text, useTheme } from 'react-native-paper';
+import MapView, { PROVIDER_GOOGLE, Region } from 'react-native-maps';
+import { Appbar, IconButton, Modal, Portal, useTheme } from 'react-native-paper';
 
 const mapDarkStyle = [
   { elementType: 'geometry', stylers: [{ color: '#212121' }] },
@@ -17,61 +19,73 @@ const mapDarkStyle = [
   { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#000000' }] },
 ];
 
-function getPinColor(incident: Incident): string {
-  if (incident.victims.length === 0) return 'green';
-  return incident.victims.some((v: Victim) => v.situation === 'Dead') ? 'red' : 'orange';
-}
-
-function traduzirSituacao(situation: string): string {
-  const mapa: Record<string, string> = {
-    Dead: 'Morto',
-    Wounded: 'Ferido',
-  };
-  return mapa[situation] ?? situation;
-}
-
-function limparValor(valor?: string | null): string {
-  return valor && valor !== 'Não se aplica' && valor !== 'Não identificado' ? valor : '—';
-}
-
 export default function MapScreen() {
   const { colors, dark } = useTheme();
   const { userLocation } = useAppContext();
 
   const [incidents, setIncidents] = useState<Incident[]>([]);
   const [loading, setLoading] = useState(true);
+  const [mapReady, setMapReady] = useState(false);
   const [selectedIncident, setSelectedIncident] = useState<Incident | null>(null);
   const mapRef = useRef<MapView>(null);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        if (!userLocation) {
-          Alert.alert('Erro', 'Localização do usuário não disponível.');
-          return;
-        }
+  const showMap = !!userLocation && !loading;
 
-        const results = await getRecentIncidentsByCoordinates(
-          userLocation.latitude,
-          userLocation.longitude,
-          90,
-        );
+  const region: Region = useMemo(
+    () => ({
+      latitude: userLocation?.latitude ?? 0,
+      longitude: userLocation?.longitude ?? 0,
+      latitudeDelta: 0.08,
+      longitudeDelta: 0.08,
+    }),
+    [userLocation],
+  );
 
-        setIncidents(results);
-      } catch (error) {
-        console.error('Erro ao buscar ocorrências:', error);
-        Alert.alert('Erro', 'Não foi possível carregar as ocorrências.');
-      } finally {
-        setLoading(false);
-      }
-    })();
+  const fetchIncidents = useCallback(async () => {
+    if (!userLocation) {
+      Alert.alert('Erro', 'Localização do usuário não disponível.');
+      return;
+    }
+
+    try {
+      const results = await getRecentIncidentsByCoordinates(
+        userLocation.latitude,
+        userLocation.longitude,
+        90,
+      );
+      setIncidents(results);
+    } catch (error) {
+      console.error('Erro ao buscar ocorrências:', error);
+      Alert.alert('Erro', 'Não foi possível carregar as ocorrências.');
+    } finally {
+      setLoading(false);
+    }
   }, [userLocation]);
 
-  const region: Region = {
-    latitude: userLocation?.latitude ?? 0,
-    longitude: userLocation?.longitude ?? 0,
-    latitudeDelta: 0.08,
-    longitudeDelta: 0.08,
+  useEffect(() => {
+    fetchIncidents();
+  }, [fetchIncidents]);
+
+  useEffect(() => {
+    if (mapRef.current && userLocation) {
+      mapRef.current.animateToRegion(
+        {
+          latitude: userLocation.latitude,
+          longitude: userLocation.longitude,
+          latitudeDelta: 0.08,
+          longitudeDelta: 0.08,
+        },
+        1000,
+      );
+    }
+  }, [userLocation]);
+
+  const handleZoom = (delta: number) => {
+    mapRef.current?.getCamera().then(camera => {
+      if (camera.zoom !== undefined) {
+        mapRef.current?.animateCamera({ ...camera, zoom: camera.zoom + delta });
+      }
+    });
   };
 
   const hideModal = () => setSelectedIncident(null);
@@ -84,33 +98,35 @@ export default function MapScreen() {
           titleStyle={{ textAlign: 'center', color: colors.onPrimary }}
         />
       </Appbar.Header>
-      {!userLocation || loading ? (
+      {!showMap ? (
         <View style={[styles.center, { backgroundColor: colors.background }]}>
           <ActivityIndicator size="large" color={colors.primary} />
         </View>
       ) : (
         <>
+          {!mapReady && (
+            <View style={[styles.overlay, { backgroundColor: colors.background }]}>
+              <ActivityIndicator size="large" color={colors.primary} />
+            </View>
+          )}
           <MapView
             customMapStyle={dark ? mapDarkStyle : []}
             initialRegion={region}
+            ref={mapRef}
             followsUserLocation
             provider={PROVIDER_GOOGLE}
-            ref={mapRef}
             showsUserLocation
             showsMyLocationButton={false}
             style={styles.map}
             toolbarEnabled={false}
             zoomControlEnabled={false}
             zoomEnabled
+            onMapReady={() => setMapReady(true)}
           >
             {incidents.map(incident => (
-              <Marker
+              <IncidentMarker
                 key={incident.id}
-                coordinate={{
-                  latitude: Number(incident.latitude),
-                  longitude: Number(incident.longitude),
-                }}
-                pinColor={getPinColor(incident)}
+                incident={incident}
                 onPress={() => setSelectedIncident(incident)}
               />
             ))}
@@ -130,13 +146,7 @@ export default function MapScreen() {
               size={28}
               containerColor={colors.primary}
               iconColor={colors.onPrimary}
-              onPress={() =>
-                mapRef.current?.getCamera().then(camera => {
-                  if (camera.zoom !== undefined) {
-                    mapRef.current?.animateCamera({ ...camera, zoom: camera.zoom + 1 });
-                  }
-                })
-              }
+              onPress={() => handleZoom(1)}
             />
             <IconButton
               icon="minus"
@@ -144,13 +154,7 @@ export default function MapScreen() {
               size={28}
               containerColor={colors.primary}
               iconColor={colors.onPrimary}
-              onPress={() =>
-                mapRef.current?.getCamera().then(camera => {
-                  if (camera.zoom !== undefined) {
-                    mapRef.current?.animateCamera({ ...camera, zoom: camera.zoom - 1 });
-                  }
-                })
-              }
+              onPress={() => handleZoom(-1)}
             />
           </View>
           <Portal>
@@ -159,76 +163,7 @@ export default function MapScreen() {
               onDismiss={hideModal}
               contentContainerStyle={styles.modal}
             >
-              {selectedIncident && (
-                <View style={[styles.modalContent, { backgroundColor: colors.background }]}>
-                  <Text
-                    variant="titleMedium"
-                    style={{ fontWeight: 'bold', color: colors.onBackground, textAlign: 'center' }}
-                  >
-                    {selectedIncident.contextInfo.mainReason.name}
-                  </Text>
-                  <Text style={{ color: colors.onBackground, textAlign: 'center' }}>
-                    {selectedIncident.address}
-                  </Text>
-                  <Text style={{ color: colors.onBackground, textAlign: 'center' }}>
-                    Data: {new Date(selectedIncident.date).toLocaleDateString('pt-BR')}
-                  </Text>
-
-                  {selectedIncident.victims.length > 0 ? (
-                    selectedIncident.victims.map((victim: Victim, index: number) => (
-                      <View key={victim.id} style={{ marginTop: index > 0 ? 16 : 8 }}>
-                        <Text style={{ fontWeight: 'bold', color: colors.onBackground }}>
-                          🧍 Vítima {index + 1}:
-                        </Text>
-                        <Text style={{ color: colors.onBackground }}>
-                          • Situação: {traduzirSituacao(victim.situation)}
-                        </Text>
-                        <Text style={{ color: colors.onBackground }}>
-                          • Idade: {victim.age ?? 'Não informada'} ({victim.ageGroup.name})
-                        </Text>
-                        <Text style={{ color: colors.onBackground }}>
-                          • Gênero: {limparValor(victim.genre?.name)}
-                        </Text>
-                        <Text style={{ color: colors.onBackground }}>
-                          • Raça: {limparValor(victim.race)}
-                        </Text>
-                        <Text style={{ color: colors.onBackground }}>
-                          • Tipo: {limparValor(victim.personType)}
-                        </Text>
-                        <Text style={{ color: colors.onBackground }}>
-                          • Local do ocorrido: {limparValor(victim.place.name)}
-                        </Text>
-                        <Text style={{ color: colors.onBackground }}>
-                          • Status de serviço: {limparValor(victim.serviceStatus.name)}
-                        </Text>
-                        <Text style={{ color: colors.onBackground }}>
-                          • Qualificação: {limparValor(victim.qualifications[0]?.name)}
-                        </Text>
-                        <Text style={{ color: colors.onBackground }}>
-                          • Cargo político: {limparValor(victim.politicalPosition.name)}
-                        </Text>
-                        <Text style={{ color: colors.onBackground }}>
-                          • Situação política: {limparValor(victim.politicalStatus.name)}
-                        </Text>
-                        <Text style={{ color: colors.onBackground }}>
-                          • Cargo de agente: {limparValor(victim.agentPosition.name)}
-                        </Text>
-                        <Text style={{ color: colors.onBackground }}>
-                          • Situação do agente: {limparValor(victim.agentStatus.name)}
-                        </Text>
-                        {victim.deathDate && (
-                          <Text style={{ color: colors.onBackground }}>
-                            • Data da morte:{' '}
-                            {new Date(victim.deathDate).toLocaleDateString('pt-BR')}
-                          </Text>
-                        )}
-                      </View>
-                    ))
-                  ) : (
-                    <Text style={{ color: colors.onBackground }}>Vítimas: Não</Text>
-                  )}
-                </View>
-              )}
+              {selectedIncident && <IncidentModal incident={selectedIncident} />}
             </Modal>
           </Portal>
         </>
@@ -249,6 +184,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 10,
+  },
   controls: {
     position: 'absolute',
     bottom: 25,
@@ -260,11 +205,5 @@ const styles = StyleSheet.create({
     padding: 20,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  modalContent: {
-    padding: 16,
-    borderRadius: 12,
-    width: '90%',
-    elevation: 6,
   },
 });
