@@ -56,7 +56,3 @@ yarn-error.*
 
 # 📁 VSCode extensions cache
 .vscode/.react/
-
-# 📁 Configurações sensíveis (Firebase)
-credentials/firebase-service-account*.json
-credentials/google-services.json

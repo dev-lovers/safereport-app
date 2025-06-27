@@ -123,8 +123,6 @@ npm install
 3. **Crie os arquivos de configuração sensíveis (não versionados):**
 
 - `.env.local` → [Variáveis de ambiente](#⚙️-variáveis-de-ambiente)
-- `credentials/google-services.json` → Firebase (Android)
-- `credentials/firebase-service-account.json` → Conta de serviço do Firebase (FCM V1)
 - `android/` → [Configuração manual](#🔧-configuração-manual-após-npx-expo-prebuild--clean)
 
 4. **Execute em um dispositivo físico** (obrigatório para notificações push)

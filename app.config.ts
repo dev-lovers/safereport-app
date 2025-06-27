@@ -24,7 +24,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   assetBundlePatterns: ['**/*'],
   newArchEnabled: true,
-
   ios: {
     ...config.ios,
     supportsTablet: true,
@@ -32,7 +31,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       'com.apple.developer.networking.wifi-info': true,
     },
   },
-
   android: {
     ...config.android,
     adaptiveIcon: {
@@ -41,7 +39,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     },
     config: {
       googleMaps: {
-        apiKey: process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY!,
+        apiKey: process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY,
       },
     },
     edgeToEdgeEnabled: true,
@@ -57,12 +55,10 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       'android.permission.ACCESS_MEDIA_LOCATION',
     ],
   },
-
   web: {
     ...config.web,
     favicon: './assets/icons/favicon.png',
   },
-
   plugins: [
     [
       'expo-camera',
@@ -131,7 +127,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       },
     ],
   ],
-
   extra: {
     ...config.extra,
     eas: {
@@ -140,5 +135,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     CROSSFIRE_API_EMAIL: process.env.CROSSFIRE_API_EMAIL,
     CROSSFIRE_API_PASSWORD: process.env.CROSSFIRE_API_PASSWORD,
     OPENCAGE_API_KEY: process.env.OPENCAGE_API_KEY,
+    EXPO_PUBLIC_GOOGLE_MAPS_API_KEY: process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY,
   },
 });
